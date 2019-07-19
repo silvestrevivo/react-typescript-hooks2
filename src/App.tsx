@@ -1,21 +1,7 @@
 import React, { useEffect } from 'react';
 import { Store } from './Store';
+import { IEpisode, IAction } from './interfaces';
 
-// interface IImage {
-//   medium: string;
-//   original: string;
-// }
-
-interface IEpisode {
-  id: number,
-  name: string,
-  season: string,
-  number: number,
-  image: {
-    medium: string;
-    original: string;
-  }
-}
 
 function App(): JSX.Element {
   const { state, dispatch } = React.useContext(Store);
@@ -35,6 +21,14 @@ function App(): JSX.Element {
       payload: dataJSON._embedded.episodes
     })
   }
+
+  const toggleFavAction = (episode: IEpisode): IAction => {
+    return dispatch({
+      type: 'ADD_FAV',
+      payload: episode
+    })
+  }
+
   return (
     <React.Fragment>
       <header className="header">
@@ -51,7 +45,10 @@ function App(): JSX.Element {
                   alt={episode.name} />
                 <h2>{episode.name}</h2>
                 <section>
-                  Season: {episode.season} Number: {episode.number}
+                  <div>
+                    Season: {episode.season} Number: {episode.number}
+                  </div>
+                  <button type="button" onClick={() => toggleFavAction(episode)}>Fav</button>
                 </section>
               </section>
             )
