@@ -9,6 +9,11 @@ export interface IEpisode {
   }
 }
 
+export interface IEpisodeProps {
+  episodes: IEpisode[],
+  toggleFavAction: (episode: IEpisode) => IAction,
+  favourites: Array<IEpisode>
+}
 
 export interface IState {
   episodes: IEpisode[],
