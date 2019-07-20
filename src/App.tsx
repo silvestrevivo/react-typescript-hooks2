@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Store } from './Store';
 import { IEpisode, IAction } from './interfaces';
 
+const EpisodesList = React.lazy<any>(() => import('./EpisodesList'));
 
-function App(): JSX.Element {
+export default function App(): JSX.Element {
   const { state, dispatch } = React.useContext(Store);
 
   useEffect(() => {
@@ -38,6 +39,12 @@ function App(): JSX.Element {
     return dispatch(dispatchObj);
   }
 
+  const props = {
+    episodes: state.episodes,
+    toggleFavAction,
+    favourites: state.favourites
+  }
+
   return (
     <React.Fragment>
       <header className="header">
@@ -50,30 +57,12 @@ function App(): JSX.Element {
         </div>
 
       </header>
-      <section className="episodes-layout">
-        {
-          state.episodes.map((episode: IEpisode) => {
-            return (
-              <section key={episode.id} className="episode-box">
-                <img
-                  src={episode.image ? episode.image.medium : ''}
-                  alt={episode.name} />
-                <h2>{episode.name}</h2>
-                <section>
-                  <div>
-                    Season: {episode.season} Number: {episode.number}
-                  </div>
-                  <button type="button" onClick={() => toggleFavAction(episode)}>
-                    {state.favourites.find((fav: IEpisode) => fav.id === episode.id) ? 'Unfav' : 'Fav'}
-                  </button>
-                </section>
-              </section>
-            )
-          })
-        }
-      </section>
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <section className="episodes-layout">
+          <EpisodesList {...props} />
+        </section>
+      </React.Suspense>
+
     </React.Fragment>
   );
 }
-
-export default App;
