@@ -1,4 +1,4 @@
-import { IEpisode, IAction, IState } from './interfaces';
+import { IEpisode, IAction, IState, Dispatch } from './interfaces';
 
 export const fetchDataAction = async (dispatch: any) => {
   const URL = 'https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes';
